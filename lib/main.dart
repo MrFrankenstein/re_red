@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 
 import 'package:re_red/reddit_instance.dart';
 import 'package:re_red/content_view.dart';
+import 'package:re_red/constants.dart';
 
 void main() => runApp(ReReddit());
 
@@ -24,9 +25,9 @@ class _ReRedditState extends State<ReReddit> {
       home: Scaffold(
         // backgroundColor: Colors.black87,
         appBar: AppBar(
-          title: Text('Re: Reddit'),
+          title: Text('re: Red', style: kAppBarTitle),
           centerTitle: true,
-          backgroundColor: Colors.deepOrange,
+          backgroundColor: Colors.red,
           elevation: 0,
         ),
         body: FutureProvider<Reddit>(

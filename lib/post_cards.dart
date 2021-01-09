@@ -113,12 +113,12 @@ class PostCard extends StatelessWidget {
               Container(
                 height: 2,
                 width: post.upvoteRatio * 100,
-                color: Colors.deepOrange,
+                color: Colors.redAccent,
               ),
               Container(
                 height: 2,
                 width: 100 - (post.upvoteRatio * 100),
-                color: Colors.blue,
+                color: Colors.blueAccent,
               ),
             ],
           ),

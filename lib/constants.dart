@@ -5,6 +5,11 @@ const String kClientId = '1MXSUGfpEDj5hA';
 const String kDeviceId =
     'okeithsldkthisngiaktneikj'; //TODO - Implement a unique device ID generation and caching mechanism
 
+const TextStyle kAppBarTitle = TextStyle(
+  fontFamily: 'Lora',
+  fontSize: 22,
+  letterSpacing: 1.5,
+);
 const TextStyle kPostTitle = TextStyle(
   color: Colors.white,
   fontFamily: 'NewYork',
