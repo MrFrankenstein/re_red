@@ -127,3 +127,5 @@ class PostCard extends StatelessWidget {
     );
   }
 }
+
+//TODO: create a class that returns time elapsed since post creation

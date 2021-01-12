@@ -25,7 +25,7 @@ class _ReRedditState extends State<ReReddit> {
       home: Scaffold(
         // backgroundColor: Colors.black87,
         appBar: AppBar(
-          title: Text('re: Red', style: kAppBarTitle),
+          title: kAppBarTitle,
           centerTitle: true,
           backgroundColor: Colors.red,
           elevation: 0,
