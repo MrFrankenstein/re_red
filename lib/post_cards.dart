@@ -60,11 +60,7 @@ class PostCard extends StatelessWidget {
                         TextSpan(text: post.author, style: kPostAuthor),
                         kDotSeparator,
                         TextSpan(
-                          text: DateTime.now()
-                              .toUtc()
-                              .difference(post.createdUtc)
-                              .inHours
-                              .toString(),
+                          text: PostingTime().getDuration(post.createdUtc),
                           style: kPostAuthor,
                         ),
                       ],
@@ -111,14 +107,14 @@ class PostCard extends StatelessWidget {
               ),
               Spacer(),
               Container(
-                height: 2,
+                height: 3,
                 width: post.upvoteRatio * 100,
-                color: Colors.redAccent,
+                color: Colors.red,
               ),
               Container(
-                height: 2,
+                height: 3,
                 width: 100 - (post.upvoteRatio * 100),
-                color: Colors.blueAccent,
+                color: Colors.blue,
               ),
             ],
           ),
@@ -128,4 +124,22 @@ class PostCard extends StatelessWidget {
   }
 }
 
-//TODO: create a class that returns time elapsed since post creation
+class PostingTime {
+  String getDuration(DateTime createdUtc) {
+    final Duration timeElapsed = DateTime.now().toUtc().difference(createdUtc);
+    if (timeElapsed.inSeconds < 60)
+      return 'now'; //now
+    else if (timeElapsed.inMinutes < 60)
+      return '${timeElapsed.inMinutes}min'; //minutes
+    else if (timeElapsed.inHours < 24)
+      return '${timeElapsed.inHours}h'; //hours
+    else if (timeElapsed.inDays < 7)
+      return '${timeElapsed.inDays}d'; //days
+    else if (timeElapsed.inDays < 30)
+      return '${(timeElapsed.inDays / 7).floor()}w'; //weeks
+    else if (timeElapsed.inDays < 365)
+      return '${(timeElapsed.inDays / 30).floor()}mo'; //months
+    else
+      return '${(timeElapsed.inDays / 365).floor()}y';
+  }
+}

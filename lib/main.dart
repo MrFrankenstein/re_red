@@ -27,7 +27,7 @@ class _ReRedditState extends State<ReReddit> {
         appBar: AppBar(
           title: kAppBarTitle,
           centerTitle: true,
-          backgroundColor: Colors.red,
+          backgroundColor: Colors.red[600],
           elevation: 0,
         ),
         body: FutureProvider<Reddit>(
