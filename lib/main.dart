@@ -18,12 +18,10 @@ class _ReRedditState extends State<ReReddit> {
 
   @override
   Widget build(BuildContext context) {
-    //print('started widget build');
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       home: Scaffold(
-        // backgroundColor: Colors.black87,
         appBar: AppBar(
           title: kAppBarTitle,
           centerTitle: true,

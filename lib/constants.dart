@@ -13,8 +13,8 @@ final RichText kAppBarTitle = RichText(
         style: TextStyle(
           color: Colors.red[50],
           fontFamily: 'CormorantGaramond',
-          fontSize: 22,
-          letterSpacing: 1.5,
+          fontSize: 23,
+          letterSpacing: 1,
         ),
       ),
       TextSpan(
@@ -22,9 +22,9 @@ final RichText kAppBarTitle = RichText(
         style: TextStyle(
           color: Colors.white,
           fontFamily: 'CormorantGaramond',
-          fontSize: 23,
+          fontSize: 24,
           fontWeight: FontWeight.bold,
-          letterSpacing: 1.5,
+          letterSpacing: 1.3,
         ),
       ),
     ],
