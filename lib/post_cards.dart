@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:draw/draw.dart';
 import 'package:intl/intl.dart';
@@ -79,28 +80,24 @@ class PostCard extends StatelessWidget {
           SizedBox(height: 10),
           Row(
             children: [
-              Row(
-                children: [
-                  Icon(
-                    Icons.import_export,
-                    color: Colors.white70,
-                    size: 18,
-                  ),
-                  Text(
-                    NumberFormat.compact().format(post.score),
-                    style: kPostScore,
-                  ),
-                ],
+              SizedBox(width: 10),
+              Icon(
+                CupertinoIcons.arrow_up_arrow_down,
+                color: Colors.white70,
+                size: 13,
               ),
-              SizedBox(width: 7),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 5),
-                child: Icon(
-                  Icons.mode_comment_outlined,
-                  color: Colors.white70,
-                  size: 16,
-                ),
+              SizedBox(width: 3),
+              Text(
+                NumberFormat.compact().format(post.score),
+                style: kPostScore,
               ),
+              SizedBox(width: 15),
+              Icon(
+                CupertinoIcons.bubble_left,
+                color: Colors.white70,
+                size: 13,
+              ),
+              SizedBox(width: 4),
               Text(
                 NumberFormat.compact().format(post.numComments),
                 style: kPostScore,
@@ -116,6 +113,7 @@ class PostCard extends StatelessWidget {
                 width: 100 - (post.upvoteRatio * 100),
                 color: Colors.blue,
               ),
+              SizedBox(width: 20),
             ],
           ),
         ],
