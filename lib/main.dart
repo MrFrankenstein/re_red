@@ -22,24 +22,31 @@ class _ReRedditState extends State<ReReddit> {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.dark(),
       home: Scaffold(
-        appBar: AppBar(
-          title: kAppBarTitle,
-          centerTitle: true,
-          backgroundColor: Colors.red[600],
-          elevation: 0,
-        ),
-        body: FutureProvider<Reddit>(
-          create: (context) =>
-              getRedditInstance.createUntrustedRedditInstance(),
-          child: Consumer<Reddit>(
-            builder: (context, reddit, child) {
-              return Center(
-                child: getRedditInstance.untrustedInstance == null
-                    ? CircularProgressIndicator()
-                    : ContentView(reddit: getRedditInstance.untrustedInstance),
-              );
-            },
-          ),
+        body: CustomScrollView(
+          slivers: [
+            SliverAppBar(
+              title: kAppBarTitle,
+              centerTitle: true,
+              floating: true,
+              snap: true,
+              elevation: 0,
+              backgroundColor: Colors.red,
+            ),
+            FutureProvider<Reddit>(
+              create: (context) =>
+                  getRedditInstance.createUntrustedRedditInstance(),
+              child: Consumer<Reddit>(
+                builder: (context, reddit, child) {
+                  return getRedditInstance.untrustedInstance == null
+                      ? SliverFillRemaining(
+                          child: Center(child: CircularProgressIndicator()),
+                        )
+                      : ContentView(
+                          reddit: getRedditInstance.untrustedInstance);
+                },
+              ),
+            ),
+          ],
         ),
       ),
     );

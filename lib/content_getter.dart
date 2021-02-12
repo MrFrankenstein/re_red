@@ -20,7 +20,7 @@ class ContentGetter with ChangeNotifier {
   void getMoreContent() async {
     connectionState = ConnectionState.active;
     var generatedContent = await reddit.front
-        .hot(limit: 20, after: lastID)
+        .hot(limit: 50, after: lastID)
         .map((event) => toSubmission(event))
         .toList();
     contentList.addAll(generatedContent);
@@ -37,7 +37,6 @@ class ContentGetter with ChangeNotifier {
 
   Widget contentWidget(int index) {
     if (connectionState == ConnectionState.done && index < contentCount) {
-      //return Text(contentList[index].title);
       return PostCard(post: contentList[index]);
     } else {
       getMoreContent();

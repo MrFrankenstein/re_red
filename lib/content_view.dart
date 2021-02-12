@@ -15,16 +15,12 @@ class ContentView extends StatelessWidget {
       create: (context) => ContentGetter(reddit),
       child: Consumer<ContentGetter>(
         builder: (context, contentGetter, child) {
-          return ListView.separated(
-            itemBuilder: (context, index) {
-              return contentGetter.contentWidget(index);
-            },
-            itemCount: contentGetter.contentCount + 1,
-            separatorBuilder: (context, i) => Divider(
-              color: Colors.white,
-              height: 0,
-              indent: 35,
-              endIndent: 35,
+          return SliverList(
+            delegate: SliverChildBuilderDelegate(
+              (context, index) {
+                return contentGetter.contentWidget(index);
+              },
+              childCount: contentGetter.contentCount + 1,
             ),
           );
         },
