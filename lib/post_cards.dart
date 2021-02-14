@@ -13,22 +13,33 @@ class PostCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool hasPreview = post.preview.isNotEmpty;
     return Container(
       padding: EdgeInsets.all(15),
       decoration: BoxDecoration(
         color: Colors.black45,
+        image: hasPreview
+            ? DecorationImage(
+                image: NetworkImage(
+                    post.preview.last.resolutions.last.url.toString()),
+                fit: BoxFit.fitWidth,
+              )
+            : null,
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Row(
             children: [
-              ClipOval(
-                child: Container(
-                  height: 30,
-                  width: 30,
+              Container(
+                height: 30,
+                width: 30,
+                decoration: BoxDecoration(
                   color:
                       subredditStyles[post.subreddit.displayName].primaryColor,
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                child: ClipOval(
                   child: subredditStyles[post.subreddit.displayName]
                               .subredditIconUrl ==
                           ""

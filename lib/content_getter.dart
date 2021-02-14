@@ -20,7 +20,7 @@ class ContentGetter with ChangeNotifier {
   void getMoreContent() async {
     connectionState = ConnectionState.active;
     var generatedContent = await reddit.front
-        .hot(limit: 50, after: lastID)
+        .hot(limit: 20, after: lastID)
         .map((event) => toSubmission(event))
         .toList();
     contentList.addAll(generatedContent);
