@@ -5,6 +5,10 @@ const String kClientId = '1MXSUGfpEDj5hA';
 const String kDeviceId =
     'okeithsldkthisngiaktneikj'; //TODO - Implement a unique device ID generation and caching mechanism
 
+const Color kPrimaryShade = Color(0xFF223459);
+const Color kRedShade = Color(0xE68C0335);
+const Color kBlueShade = Color(0xE65888A6);
+
 final RichText kAppBarTitle = RichText(
   text: TextSpan(
     children: [

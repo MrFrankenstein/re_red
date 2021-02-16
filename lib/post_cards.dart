@@ -35,9 +35,9 @@ class PostCard extends StatelessWidget {
                 height: 30,
                 width: 30,
                 decoration: BoxDecoration(
+                  shape: BoxShape.circle,
                   color:
                       subredditStyles[post.subreddit.displayName].primaryColor,
-                  borderRadius: BorderRadius.circular(30),
                 ),
                 child: ClipOval(
                   child: subredditStyles[post.subreddit.displayName]
@@ -117,12 +117,12 @@ class PostCard extends StatelessWidget {
               Container(
                 height: 3,
                 width: post.upvoteRatio * 100,
-                color: Colors.red,
+                color: kRedShade,
               ),
               Container(
                 height: 3,
                 width: 100 - (post.upvoteRatio * 100),
-                color: Colors.blue,
+                color: kBlueShade,
               ),
               SizedBox(width: 20),
             ],

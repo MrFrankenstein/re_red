@@ -30,7 +30,7 @@ class _ReRedditState extends State<ReReddit> {
               floating: true,
               snap: true,
               elevation: 0,
-              backgroundColor: Colors.red,
+              backgroundColor: kPrimaryShade,
             ),
             FutureProvider<Reddit>(
               create: (context) =>
