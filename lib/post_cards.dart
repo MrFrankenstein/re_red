@@ -14,118 +14,140 @@ class PostCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool hasPreview = post.preview.isNotEmpty;
-    return Container(
-      padding: EdgeInsets.all(15),
-      decoration: BoxDecoration(
-        color: Colors.black45,
-        image: hasPreview
-            ? DecorationImage(
-                image: NetworkImage(
-                    post.preview.last.resolutions.last.url.toString()),
-                fit: BoxFit.fitWidth,
-              )
-            : null,
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
+    if (hasPreview) hasPreview = post.preview.last.resolutions.isNotEmpty;
+    return IntrinsicHeight(
+      child: Stack(
+        alignment: Alignment.center,
+        fit: StackFit.passthrough,
+        overflow: Overflow.clip,
         children: [
-          Row(
-            children: [
-              Container(
-                height: 30,
-                width: 30,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  color:
-                      subredditStyles[post.subreddit.displayName].primaryColor,
-                ),
-                child: ClipOval(
-                  child: subredditStyles[post.subreddit.displayName]
-                              .subredditIconUrl ==
-                          ""
-                      ? Icon(
-                          Icons.ac_unit_outlined,
-                          size: 22,
-                          color: subredditStyles[post.subreddit.displayName]
-                                      .primaryColor
-                                      .computeLuminance() >
-                                  0.5
-                              ? Color(0xff252527)
-                              : Color(0xfff8f8f8),
-                        )
-                      : Image.network(
-                          subredditStyles[post.subreddit.displayName]
-                              .subredditIconUrl),
-                ),
+          ConstrainedBox(
+            constraints: BoxConstraints(maxHeight: 300),
+            child: hasPreview
+                ? Image.network(
+                    post.preview.last.resolutions.last.url.toString(),
+                    fit: BoxFit.fitWidth,
+                  )
+                : SizedBox(),
+          ),
+          Container(
+            padding: EdgeInsets.all(15),
+            decoration: BoxDecoration(
+              gradient: LinearGradient(
+                begin: Alignment.bottomLeft,
+                end: Alignment.topRight,
+                colors: [
+                  Colors.black54,
+                  Colors.black26,
+                ],
               ),
-              SizedBox(width: 10),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(
-                    post.subreddit.displayName,
-                    style: kPostSubreddit,
-                  ),
-                  RichText(
-                    text: TextSpan(
+            ),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Row(
+                  children: [
+                    Container(
+                      height: 30,
+                      width: 30,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: subredditStyles[post.subreddit.displayName]
+                            .primaryColor,
+                      ),
+                      child: ClipOval(
+                        child: subredditStyles[post.subreddit.displayName]
+                                    .subredditIconUrl ==
+                                ""
+                            ? Icon(
+                                Icons.ac_unit_outlined,
+                                size: 22,
+                                color:
+                                    subredditStyles[post.subreddit.displayName]
+                                                .primaryColor
+                                                .computeLuminance() >
+                                            0.5
+                                        ? Color(0xff252527)
+                                        : Color(0xfff8f8f8),
+                              )
+                            : Image.network(
+                                subredditStyles[post.subreddit.displayName]
+                                    .subredditIconUrl),
+                      ),
+                    ),
+                    SizedBox(width: 10),
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        TextSpan(text: post.author, style: kPostAuthor),
-                        kDotSeparator,
-                        TextSpan(
-                          text: PostingTime().getDuration(post.createdUtc),
-                          style: kPostAuthor,
+                        Text(
+                          post.subreddit.displayName,
+                          style: kPostSubreddit,
+                        ),
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(text: post.author, style: kPostAuthor),
+                              kDotSeparator,
+                              TextSpan(
+                                text:
+                                    PostingTime().getDuration(post.createdUtc),
+                                style: kPostAuthor,
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          SizedBox(height: 10),
-          Text(
-            post.title,
-            style: kPostTitle,
-            // textAlign: TextAlign.justify,
-          ),
-          SizedBox(height: 10),
-          Row(
-            children: [
-              SizedBox(width: 10),
-              Icon(
-                CupertinoIcons.arrow_up_arrow_down,
-                color: Colors.white70,
-                size: 13,
-              ),
-              SizedBox(width: 3),
-              Text(
-                NumberFormat.compact().format(post.score),
-                style: kPostScore,
-              ),
-              SizedBox(width: 15),
-              Icon(
-                CupertinoIcons.bubble_left,
-                color: Colors.white70,
-                size: 13,
-              ),
-              SizedBox(width: 4),
-              Text(
-                NumberFormat.compact().format(post.numComments),
-                style: kPostScore,
-              ),
-              Spacer(),
-              Container(
-                height: 3,
-                width: post.upvoteRatio * 100,
-                color: kRedShade,
-              ),
-              Container(
-                height: 3,
-                width: 100 - (post.upvoteRatio * 100),
-                color: kBlueShade,
-              ),
-              SizedBox(width: 20),
-            ],
+                  ],
+                ),
+                hasPreview
+                    ? Expanded(child: SizedBox(height: 10))
+                    : SizedBox(height: 10),
+                Text(
+                  post.title,
+                  style: kPostTitle,
+                ),
+                SizedBox(height: 10),
+                Row(
+                  children: [
+                    SizedBox(width: 10),
+                    Icon(
+                      CupertinoIcons.arrow_up_arrow_down,
+                      color: kGreyShade,
+                      size: 13,
+                    ),
+                    SizedBox(width: 3),
+                    Text(
+                      NumberFormat.compact().format(post.score),
+                      style: kPostScore,
+                    ),
+                    SizedBox(width: 15),
+                    Icon(
+                      CupertinoIcons.bubble_left,
+                      color: kGreyShade,
+                      size: 13,
+                    ),
+                    SizedBox(width: 4),
+                    Text(
+                      NumberFormat.compact().format(post.numComments),
+                      style: kPostScore,
+                    ),
+                    Spacer(),
+                    Container(
+                      height: 3,
+                      width: post.upvoteRatio * 100,
+                      color: kRedShade,
+                    ),
+                    Container(
+                      height: 3,
+                      width: 100 - (post.upvoteRatio * 100),
+                      color: kBlueShade,
+                    ),
+                    SizedBox(width: 20),
+                  ],
+                ),
+              ],
+            ),
           ),
         ],
       ),

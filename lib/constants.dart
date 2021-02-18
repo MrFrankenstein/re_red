@@ -8,6 +8,7 @@ const String kDeviceId =
 const Color kPrimaryShade = Color(0xFF223459);
 const Color kRedShade = Color(0xE68C0335);
 const Color kBlueShade = Color(0xE65888A6);
+const Color kGreyShade = Color(0xFFE8E8E8);
 
 final RichText kAppBarTitle = RichText(
   text: TextSpan(
@@ -49,13 +50,13 @@ const TextStyle kPostSubreddit = TextStyle(
   fontWeight: FontWeight.w600,
 );
 const TextStyle kPostAuthor = TextStyle(
-  color: Colors.white70,
+  color: kGreyShade,
   fontFamily: 'OpenSans',
   letterSpacing: 0.3,
   fontSize: 11,
 );
 const TextStyle kPostScore = TextStyle(
-  color: Colors.white70,
+  color: kGreyShade,
   fontFamily: 'OpenSans',
   letterSpacing: 0.3,
   fontSize: 13,
@@ -63,7 +64,7 @@ const TextStyle kPostScore = TextStyle(
 const TextSpan kDotSeparator = TextSpan(
   text: ' • ',
   style: TextStyle(
-    color: Colors.white70,
+    color: kGreyShade,
     fontSize: 12,
   ),
 );
