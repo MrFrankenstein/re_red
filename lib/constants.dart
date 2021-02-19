@@ -41,6 +41,13 @@ const TextStyle kPostTitle = TextStyle(
   fontFamily: 'NewYork',
   letterSpacing: 0.5,
   fontSize: 17,
+  shadows: [
+    Shadow(
+      color: Colors.black,
+      offset: Offset(1, 1),
+      blurRadius: 5,
+    ),
+  ],
 );
 const TextStyle kPostSubreddit = TextStyle(
   color: Colors.white,
@@ -48,23 +55,44 @@ const TextStyle kPostSubreddit = TextStyle(
   letterSpacing: 0.8,
   fontSize: 13,
   fontWeight: FontWeight.w600,
+  shadows: [
+    Shadow(
+      color: Colors.black,
+      offset: Offset(1, 1),
+      blurRadius: 5,
+    ),
+  ],
 );
 const TextStyle kPostAuthor = TextStyle(
   color: kGreyShade,
   fontFamily: 'OpenSans',
   letterSpacing: 0.3,
   fontSize: 11,
+  shadows: [
+    Shadow(
+      color: Colors.black,
+      offset: Offset(1, 1),
+      blurRadius: 5,
+    ),
+  ],
 );
 const TextStyle kPostScore = TextStyle(
   color: kGreyShade,
   fontFamily: 'OpenSans',
   letterSpacing: 0.3,
   fontSize: 13,
+  shadows: [
+    Shadow(
+      color: Colors.black,
+      offset: Offset(1, 1),
+      blurRadius: 5,
+    ),
+  ],
 );
 const TextSpan kDotSeparator = TextSpan(
   text: ' • ',
   style: TextStyle(
-    color: kGreyShade,
+    color: Colors.white70,
     fontSize: 12,
   ),
 );

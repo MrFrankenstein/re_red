@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:draw/draw.dart';
 import 'package:intl/intl.dart';
+import 'package:html_unescape/html_unescape_small.dart';
 
 import 'package:re_red/constants.dart';
 import 'package:re_red/styles_getter.dart';
@@ -22,7 +23,7 @@ class PostCard extends StatelessWidget {
         overflow: Overflow.clip,
         children: [
           ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 300),
+            constraints: BoxConstraints(maxHeight: 250),
             child: hasPreview
                 ? Image.network(
                     post.preview.last.resolutions.last.url.toString(),
@@ -104,7 +105,7 @@ class PostCard extends StatelessWidget {
                     ? Expanded(child: SizedBox(height: 10))
                     : SizedBox(height: 10),
                 Text(
-                  post.title,
+                  HtmlUnescape().convert(post.title),
                   style: kPostTitle,
                 ),
                 SizedBox(height: 10),
@@ -136,12 +137,30 @@ class PostCard extends StatelessWidget {
                     Container(
                       height: 3,
                       width: post.upvoteRatio * 100,
-                      color: kRedShade,
+                      decoration: BoxDecoration(
+                        color: kRedShade,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: 3,
+                            offset: Offset(1, 1),
+                          ),
+                        ],
+                      ),
                     ),
                     Container(
                       height: 3,
                       width: 100 - (post.upvoteRatio * 100),
-                      color: kBlueShade,
+                      decoration: BoxDecoration(
+                        color: kBlueShade,
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black54,
+                            blurRadius: 3,
+                            offset: Offset(1, 1),
+                          ),
+                        ],
+                      ),
                     ),
                     SizedBox(width: 20),
                   ],
