@@ -80,9 +80,12 @@ class PostCard extends StatelessWidget {
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Text(
-                          post.subreddit.displayName,
-                          style: kPostSubreddit,
+                        Container(
+                          //TODO: Get inverted rounded edges
+                          child: Text(
+                            post.subreddit.displayName,
+                            style: kPostSubreddit,
+                          ),
                         ),
                         RichText(
                           text: TextSpan(
@@ -111,55 +114,93 @@ class PostCard extends StatelessWidget {
                 SizedBox(height: 10),
                 Row(
                   children: [
-                    SizedBox(width: 10),
-                    Icon(
-                      CupertinoIcons.arrow_up_arrow_down,
-                      color: kGreyShade,
-                      size: 13,
-                    ),
-                    SizedBox(width: 3),
-                    Text(
-                      NumberFormat.compact().format(post.score),
-                      style: kPostScore,
-                    ),
-                    SizedBox(width: 15),
-                    Icon(
-                      CupertinoIcons.bubble_left,
-                      color: kGreyShade,
-                      size: 13,
-                    ),
-                    SizedBox(width: 4),
-                    Text(
-                      NumberFormat.compact().format(post.numComments),
-                      style: kPostScore,
-                    ),
-                    Spacer(),
                     Container(
-                      height: 3,
-                      width: post.upvoteRatio * 100,
+                      padding: EdgeInsets.only(
+                        top: 4,
+                        bottom: 4,
+                        left: 12,
+                        right: 8,
+                      ),
                       decoration: BoxDecoration(
-                        color: kRedShade,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black54,
-                            blurRadius: 3,
-                            offset: Offset(1, 1),
+                        color: Colors.black26,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(20),
+                          bottomLeft: Radius.circular(20),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            CupertinoIcons.arrow_up_arrow_down,
+                            color: kGreyShade,
+                            size: 13,
+                          ),
+                          SizedBox(width: 3),
+                          Text(
+                            NumberFormat.compact().format(post.score),
+                            style: kPostScore,
                           ),
                         ],
                       ),
                     ),
+                    SizedBox(width: 1),
                     Container(
-                      height: 3,
+                      padding: EdgeInsets.only(
+                        top: 4,
+                        bottom: 4,
+                        right: 12,
+                        left: 8,
+                      ),
+                      decoration: BoxDecoration(
+                        color: Colors.black26,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(20),
+                          bottomRight: Radius.circular(20),
+                        ),
+                      ),
+                      child: Row(
+                        children: [
+                          Icon(
+                            CupertinoIcons.bubble_left,
+                            color: kGreyShade,
+                            size: 13,
+                          ),
+                          SizedBox(width: 4),
+                          Text(
+                            NumberFormat.compact().format(post.numComments),
+                            style: kPostScore,
+                          ),
+                        ],
+                      ),
+                    ),
+                    Spacer(),
+                    // Image.asset(
+                    //   'assets/awards/platinum.png',  //TODO
+                    //   scale: 1.5,
+                    // ),
+                    // Spacer(),
+                    Container(
+                      height: 4,
+                      width: post.upvoteRatio * 100,
+                      decoration: BoxDecoration(
+                        color: kRedShade,
+                        border: Border(
+                          top: kBorderStyle,
+                          bottom: kBorderStyle,
+                          left: kBorderStyle,
+                        ),
+                      ),
+                    ),
+                    Container(
+                      height: 4,
                       width: 100 - (post.upvoteRatio * 100),
                       decoration: BoxDecoration(
                         color: kBlueShade,
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black54,
-                            blurRadius: 3,
-                            offset: Offset(1, 1),
-                          ),
-                        ],
+                        border: Border(
+                          top: kBorderStyle,
+                          bottom: kBorderStyle,
+                          right: kBorderStyle,
+                        ),
                       ),
                     ),
                     SizedBox(width: 20),

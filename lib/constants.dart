@@ -96,3 +96,8 @@ const TextSpan kDotSeparator = TextSpan(
     fontSize: 12,
   ),
 );
+
+const BorderSide kBorderStyle = BorderSide(
+  color: Colors.black38,
+  width: 1,
+);
