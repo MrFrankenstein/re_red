@@ -38,8 +38,8 @@ class PostCard extends StatelessWidget {
                 begin: Alignment.bottomLeft,
                 end: Alignment.topRight,
                 colors: [
-                  Colors.black54,
-                  Colors.black26,
+                  Colors.black38,
+                  Colors.transparent,
                 ],
               ),
             ),
@@ -49,55 +49,90 @@ class PostCard extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      height: 30,
-                      width: 30,
+                      padding: const EdgeInsets.all(7),
                       decoration: BoxDecoration(
-                        shape: BoxShape.circle,
-                        color: subredditStyles[post.subreddit.displayName]
-                            .primaryColor,
+                        color: Colors.black26,
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(30),
+                          bottomLeft: Radius.circular(30),
+                        ),
                       ),
-                      child: ClipOval(
-                        child: subredditStyles[post.subreddit.displayName]
-                                    .subredditIconUrl ==
-                                ""
-                            ? Icon(
-                                Icons.ac_unit_outlined,
-                                size: 22,
-                                color:
-                                    subredditStyles[post.subreddit.displayName]
-                                                .primaryColor
-                                                .computeLuminance() >
-                                            0.5
-                                        ? Color(0xff252527)
-                                        : Color(0xfff8f8f8),
-                              )
-                            : Image.network(
-                                subredditStyles[post.subreddit.displayName]
-                                    .subredditIconUrl),
+                      child: Container(
+                        height: 33,
+                        width: 33,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: subredditStyles[post.subreddit.displayName]
+                              .primaryColor,
+                        ),
+                        child: ClipOval(
+                          child: subredditStyles[post.subreddit.displayName]
+                                      .subredditIconUrl ==
+                                  ""
+                              ? Icon(
+                                  Icons.ac_unit_outlined,
+                                  size: 22,
+                                  color: subredditStyles[
+                                                  post.subreddit.displayName]
+                                              .primaryColor
+                                              .computeLuminance() >
+                                          0.5
+                                      ? Color(0xff252527)
+                                      : Color(0xfff8f8f8),
+                                )
+                              : Image.network(
+                                  subredditStyles[post.subreddit.displayName]
+                                      .subredditIconUrl),
+                        ),
                       ),
                     ),
-                    SizedBox(width: 10),
+                    // SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Container(
-                          //TODO: Get inverted rounded edges
+                          padding: const EdgeInsets.only(
+                            left: 5,
+                            right: 10,
+                            top: 5,
+                            bottom: 4,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              topRight: Radius.circular(18),
+                            ),
+                            color: Colors.black26,
+                          ),
                           child: Text(
                             post.subreddit.displayName,
                             style: kPostSubreddit,
                           ),
                         ),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(text: post.author, style: kPostAuthor),
-                              kDotSeparator,
-                              TextSpan(
-                                text:
-                                    PostingTime().getDuration(post.createdUtc),
-                                style: kPostAuthor,
-                              ),
-                            ],
+                        Container(
+                          padding: const EdgeInsets.only(
+                            left: 5,
+                            right: 8,
+                            top: 3,
+                            bottom: 5,
+                          ),
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.only(
+                              bottomRight: Radius.circular(12),
+                            ),
+                            color: Colors.black26,
+                          ),
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(text: post.author, style: kPostAuthor),
+                                kDotSeparator,
+                                TextSpan(
+                                  text: PostingTime()
+                                      .getDuration(post.createdUtc),
+                                  style: kPostAuthor,
+                                ),
+                              ],
+                            ),
                           ),
                         ),
                       ],
@@ -107,9 +142,19 @@ class PostCard extends StatelessWidget {
                 hasPreview
                     ? Expanded(child: SizedBox(height: 10))
                     : SizedBox(height: 10),
-                Text(
-                  HtmlUnescape().convert(post.title),
-                  style: kPostTitle,
+                Container(
+                  padding: EdgeInsets.symmetric(
+                    horizontal: 12,
+                    vertical: 7,
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.black26,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Text(
+                    HtmlUnescape().convert(post.title),
+                    style: kPostTitle,
+                  ),
                 ),
                 SizedBox(height: 10),
                 Row(
