@@ -16,6 +16,17 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     bool hasPreview = post.preview.isNotEmpty;
     if (hasPreview) hasPreview = post.preview.last.resolutions.isNotEmpty;
+
+    Awardings allAwardings;
+    bool hasAwards = false;
+    if (post.data['total_awards_received'] > 0 &&
+        post.data['all_awardings'] != null) {
+      allAwardings = Awardings(
+          awardingsData: post.data['all_awardings'],
+          totalAwards: post.data['total_awards_received']);
+      hasAwards = true;
+    }
+
     return IntrinsicHeight(
       child: Stack(
         alignment: Alignment.center,
@@ -193,15 +204,11 @@ class PostCard extends StatelessWidget {
                       padding: EdgeInsets.only(
                         top: 4,
                         bottom: 4,
-                        right: 12,
-                        left: 8,
+                        right: 8,
+                        left: 10,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.black26,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
                       ),
                       child: Row(
                         children: [
@@ -218,15 +225,12 @@ class PostCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Spacer(),
-                    // Image.asset(
-                    //   'assets/awards/platinum.png',  //TODO
-                    //   scale: 1.5,
-                    // ),
-                    // Spacer(),
+                    SizedBox(width: 1),
+                    hasAwards ? allAwardings.getAwardsPreview() : Spacer(),
+                    Expanded(child: SizedBox(width: 10)),
                     Container(
                       height: 4,
-                      width: post.upvoteRatio * 100,
+                      width: post.upvoteRatio * 90,
                       decoration: BoxDecoration(
                         color: kRedShade,
                         border: Border(
@@ -238,7 +242,7 @@ class PostCard extends StatelessWidget {
                     ),
                     Container(
                       height: 4,
-                      width: 100 - (post.upvoteRatio * 100),
+                      width: 90 - (post.upvoteRatio * 90),
                       decoration: BoxDecoration(
                         color: kBlueShade,
                         border: Border(
@@ -248,7 +252,7 @@ class PostCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 20),
+                    SizedBox(width: 10),
                   ],
                 ),
               ],
@@ -256,6 +260,120 @@ class PostCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class Awardings {
+  final List awardingsData;
+  final int totalAwards;
+
+  Map awardingsMap = {};
+
+  bool isSilver = false;
+  bool isGold = false;
+  bool isPlatinum = false;
+  bool isArgentium = false;
+  bool isTernion = false;
+
+  List awardsPreviewList = [];
+
+  Awardings({this.awardingsData, this.totalAwards}) {
+    for (var award in awardingsData) {
+      awardingsMap[award['name']] = {
+        'name': award['name'],
+        'count': award['count'],
+        'description': award['description'],
+        'iconUrl': HtmlUnescape().convert(award['icon_url']),
+        'smallIconUrl':
+            HtmlUnescape().convert(award['resized_icons'][1]['url']),
+      };
+    }
+
+    if (awardingsMap.containsKey('Silver')) isSilver = true;
+    if (awardingsMap.containsKey('Gold')) isGold = true;
+    if (awardingsMap.containsKey('Platinum')) isPlatinum = true;
+    if (awardingsMap.containsKey('Argentium')) isArgentium = true;
+    if (awardingsMap.containsKey('Ternion All-Powerful')) isTernion = true;
+
+    if (awardingsData.length > 0 && awardingsData.length < 4) {
+      for (var award in awardingsMap.values) {
+        awardsPreviewList.add(award);
+      }
+    } else {
+      while (awardsPreviewList.length < 4) {
+        if (isTernion) {
+          awardsPreviewList.add(awardingsMap['Ternion All-Powerful']);
+          isTernion = false;
+          continue;
+        } else if (isArgentium) {
+          awardsPreviewList.add(awardingsMap['Argentium']);
+          isArgentium = false;
+          continue;
+        } else if (isPlatinum) {
+          awardsPreviewList.add(awardingsMap['Platinum']);
+          isPlatinum = false;
+          continue;
+        } else if (isGold) {
+          awardsPreviewList.add(awardingsMap['Gold']);
+          isGold = false;
+          continue;
+        } else if (isSilver) {
+          awardsPreviewList.add(awardingsMap['Silver']);
+          isSilver = false;
+          continue;
+        } else {
+          for (var award in awardingsMap.values) {
+            if (awardsPreviewList.length > 2) break;
+            if (!awardsPreviewList.contains(award))
+              awardsPreviewList.add(award);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  Container getAwardsPreview() {
+    return Container(
+      padding: const EdgeInsets.only(
+        left: 8,
+        right: 10,
+        top: 2,
+        bottom: 2,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.black26,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
+      ),
+      child: Row(
+        children: awardsPreviewList
+            .map((award) => Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: getAwardIcon(award),
+                ))
+            .toList()
+              ..add(Padding(
+                padding: const EdgeInsets.all(2),
+                child: Text(
+                  '+' +
+                      NumberFormat.compact()
+                          .format(totalAwards - awardsPreviewList.length)
+                          .toString(),
+                  style: kPostScore,
+                ),
+              )),
+      ),
+    );
+  }
+
+  Image getAwardIcon(Map award) {
+    return Image.network(
+      award['smallIconUrl'],
+      width: 17,
     );
   }
 }

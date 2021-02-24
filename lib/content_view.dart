@@ -18,7 +18,9 @@ class ContentView extends StatelessWidget {
           return SliverList(
             delegate: SliverChildBuilderDelegate(
               (context, index) {
-                return contentGetter.contentWidget(index);
+                return contentGetter.connectionState == ConnectionState.done
+                    ? contentGetter.contentWidget(index)
+                    : Center(child: LinearProgressIndicator());
               },
               childCount: contentGetter.contentCount + 1,
             ),

@@ -12,10 +12,8 @@ class ContentGetter with ChangeNotifier {
   var contentList = <Submission>[];
   StylesGetter stylesGetter = StylesGetter();
 
-  ConnectionState connectionState = ConnectionState.none;
-  int get contentCount {
-    return contentList.length;
-  }
+  ConnectionState connectionState = ConnectionState.done;
+  int get contentCount => contentList.length;
 
   void getMoreContent() async {
     connectionState = ConnectionState.active;
