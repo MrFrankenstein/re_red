@@ -153,6 +153,9 @@ class PostCard extends StatelessWidget {
                 hasPreview
                     ? Expanded(child: SizedBox(height: 10))
                     : SizedBox(height: 10),
+                post.linkFlairText != null
+                    ? Text(post.linkFlairText) //TODO: Implement flair
+                    : Container(),
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 12,
@@ -226,7 +229,7 @@ class PostCard extends StatelessWidget {
                       ),
                     ),
                     SizedBox(width: 1),
-                    hasAwards ? allAwardings.getAwardsPreview() : Spacer(),
+                    hasAwards ? allAwardings.getAwardsPreview() : Container(),
                     Expanded(child: SizedBox(width: 10)),
                     Container(
                       height: 4,
@@ -252,7 +255,6 @@ class PostCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 10),
                   ],
                 ),
               ],
@@ -301,30 +303,25 @@ class Awardings {
         awardsPreviewList.add(award);
       }
     } else {
-      while (awardsPreviewList.length < 4) {
+      while (awardsPreviewList.length < 3) {
         if (isTernion) {
           awardsPreviewList.add(awardingsMap['Ternion All-Powerful']);
           isTernion = false;
-          continue;
         } else if (isArgentium) {
           awardsPreviewList.add(awardingsMap['Argentium']);
           isArgentium = false;
-          continue;
         } else if (isPlatinum) {
           awardsPreviewList.add(awardingsMap['Platinum']);
           isPlatinum = false;
-          continue;
         } else if (isGold) {
           awardsPreviewList.add(awardingsMap['Gold']);
           isGold = false;
-          continue;
         } else if (isSilver) {
           awardsPreviewList.add(awardingsMap['Silver']);
           isSilver = false;
-          continue;
         } else {
           for (var award in awardingsMap.values) {
-            if (awardsPreviewList.length > 2) break;
+            if (awardsPreviewList.length >= 3) break;
             if (!awardsPreviewList.contains(award))
               awardsPreviewList.add(award);
           }
@@ -356,16 +353,18 @@ class Awardings {
                   child: getAwardIcon(award),
                 ))
             .toList()
-              ..add(Padding(
-                padding: const EdgeInsets.all(2),
-                child: Text(
-                  '+' +
-                      NumberFormat.compact()
-                          .format(totalAwards - awardsPreviewList.length)
-                          .toString(),
-                  style: kPostScore,
-                ),
-              )),
+              ..add(totalAwards - awardsPreviewList.length == 0
+                  ? Padding(padding: EdgeInsets.zero)
+                  : Padding(
+                      padding: const EdgeInsets.all(2),
+                      child: Text(
+                        '+' +
+                            NumberFormat.compact()
+                                .format(totalAwards - awardsPreviewList.length)
+                                .toString(),
+                        style: kPostScore,
+                      ),
+                    )),
       ),
     );
   }

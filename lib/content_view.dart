@@ -6,7 +6,6 @@ import 'package:re_red/content_getter.dart';
 
 class ContentView extends StatelessWidget {
   ContentView({@required this.reddit});
-
   final Reddit reddit;
 
   @override
