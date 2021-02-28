@@ -23,6 +23,7 @@ class _ReRedditState extends State<ReReddit> {
       theme: ThemeData.dark(),
       home: Scaffold(
         body: CustomScrollView(
+          cacheExtent: 100,
           slivers: [
             SliverAppBar(
               title: kAppBarTitle,

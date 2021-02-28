@@ -27,6 +27,8 @@ class PostCard extends StatelessWidget {
       hasAwards = true;
     }
 
+    print(post.variants);
+
     return IntrinsicHeight(
       child: Stack(
         alignment: Alignment.center,
@@ -34,13 +36,8 @@ class PostCard extends StatelessWidget {
         overflow: Overflow.clip,
         children: [
           ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 250),
-            child: hasPreview
-                ? Image.network(
-                    post.preview.last.resolutions.last.url.toString(),
-                    fit: BoxFit.fitWidth,
-                  )
-                : SizedBox(),
+            constraints: BoxConstraints(maxHeight: 300),
+            child: hasPreview ? PreviewGetter(post).getPreview() : SizedBox(),
           ),
           Container(
             padding: EdgeInsets.all(15),
@@ -97,7 +94,6 @@ class PostCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    // SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -148,14 +144,13 @@ class PostCard extends StatelessWidget {
                         ),
                       ],
                     ),
+                    Spacer(),
                   ],
                 ),
                 hasPreview
                     ? Expanded(child: SizedBox(height: 10))
                     : SizedBox(height: 10),
-                post.linkFlairText != null
-                    ? Text(post.linkFlairText) //TODO: Implement flair
-                    : Container(),
+                Row(children: TagsGetter(post).tags),
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 12,
@@ -233,7 +228,7 @@ class PostCard extends StatelessWidget {
                     Expanded(child: SizedBox(width: 10)),
                     Container(
                       height: 4,
-                      width: post.upvoteRatio * 90,
+                      width: post.upvoteRatio * 80,
                       decoration: BoxDecoration(
                         color: kRedShade,
                         border: Border(
@@ -245,7 +240,7 @@ class PostCard extends StatelessWidget {
                     ),
                     Container(
                       height: 4,
-                      width: 90 - (post.upvoteRatio * 90),
+                      width: 80 - (post.upvoteRatio * 80),
                       decoration: BoxDecoration(
                         color: kBlueShade,
                         border: Border(
@@ -263,6 +258,84 @@ class PostCard extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+class TagsGetter {
+  final Submission post;
+  List<Widget> tags = [];
+
+  TagsGetter(this.post) {
+    getTags();
+  }
+
+  void getTags() {
+    if (post.over18 || post.spoiler) {
+      tags.add(SizedBox(width: 4));
+    }
+
+    if (post.over18) {
+      tags.add(Container(
+        margin: EdgeInsets.all(4),
+        padding: EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.red,
+        ),
+        child: Text(
+          '18',
+          style: TextStyle(
+            color: Colors.black87,
+            fontSize: 12,
+            fontFamily: 'Lora',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ));
+    }
+
+    if (post.spoiler) {
+      tags.add(Container(
+        margin: EdgeInsets.all(4),
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white70,
+        ),
+        child: Text(
+          '!',
+          style: TextStyle(
+            color: Colors.black87,
+            fontSize: 12,
+            fontFamily: 'NewYork',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ));
+    }
+  }
+}
+
+class PreviewGetter {
+  PreviewGetter(this.post);
+  final Submission post;
+
+  Widget getPreview() {
+    if (post.variants.isEmpty) {
+      return Image.network(
+        post.preview.last.resolutions.last.url.toString(),
+        fit: BoxFit.fitWidth,
+      );
+    } else if (post.over18 || post.spoiler) {
+      return Image.network(
+        post.variants[0]['obfuscated'].resolutions.last.url.toString(),
+        fit: BoxFit.fitWidth,
+      );
+    } else {
+      return Image.network(
+        post.variants[0]['gif'].resolutions.last.url.toString(),
+      );
+    }
   }
 }
 
