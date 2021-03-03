@@ -71,7 +71,7 @@ class PostCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: subredditStyles[post.subreddit.displayName]
-                              .primaryColor,
+                              .primaryColor, //TODO: sometimes gets called on null
                         ),
                         child: ClipOval(
                           child: subredditStyles[post.subreddit.displayName]
@@ -280,13 +280,20 @@ class TagsGetter {
         padding: EdgeInsets.all(4),
         decoration: BoxDecoration(
           shape: BoxShape.circle,
-          color: Colors.red,
+          color: Color(0xCCFF6161),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black54,
+              offset: Offset(2, 2),
+              blurRadius: 5,
+            ),
+          ],
         ),
         child: Text(
           '18',
           style: TextStyle(
             color: Colors.black87,
-            fontSize: 12,
+            fontSize: 11,
             fontFamily: 'Lora',
             fontWeight: FontWeight.bold,
           ),
@@ -301,12 +308,19 @@ class TagsGetter {
         decoration: BoxDecoration(
           shape: BoxShape.circle,
           color: Colors.white70,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black54,
+              offset: Offset(2, 2),
+              blurRadius: 5,
+            ),
+          ],
         ),
         child: Text(
           '!',
           style: TextStyle(
             color: Colors.black87,
-            fontSize: 12,
+            fontSize: 11,
             fontFamily: 'NewYork',
             fontWeight: FontWeight.bold,
           ),
@@ -334,6 +348,11 @@ class PreviewGetter {
     } else {
       return Image.network(
         post.variants[0]['gif'].resolutions.last.url.toString(),
+        fit: BoxFit.fitWidth,
+        gaplessPlayback: true,
+        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+          return child; //TODO: use mp4 variants for streaming rather than gifs
+        },
       );
     }
   }
