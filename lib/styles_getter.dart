@@ -1,9 +1,10 @@
-import 'package:flutter/material.dart';
 import 'dart:collection';
 import 'dart:convert';
+
 import 'package:draw/draw.dart';
-import 'package:http/http.dart' as http;
+import 'package:flutter/material.dart';
 import 'package:html_unescape/html_unescape_small.dart';
+import 'package:http/http.dart' as http;
 
 const String stylesUrl = 'https://www.reddit.com/api/info.json?sr_name=';
 HashMap<String, StyleObject> subredditStyles = HashMap<String, StyleObject>();
@@ -16,7 +17,7 @@ class StylesGetter {
         newItems.add(submission.subreddit.displayName);
       }
     }
-    var response = await http.get(stylesUrl + newItems.join(','));
+    var response = await http.get(Uri.parse(stylesUrl + newItems.join(',')));
     var styles = jsonDecode(response.body);
     for (var style in styles['data']['children']) {
       if (style['kind'] == 't5') {
@@ -93,10 +94,10 @@ class StyleObject {
     this.subredditDescription,
   });
 
-  final String subredditIconUrl;
-  final String subredditBannerUrl;
-  final Color primaryColor;
-  final Color keyColor;
-  final String subredditTitle;
-  final String subredditDescription;
+  final String? subredditIconUrl;
+  final String? subredditBannerUrl;
+  final Color? primaryColor;
+  final Color? keyColor;
+  final String? subredditTitle;
+  final String? subredditDescription;
 }

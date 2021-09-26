@@ -1,54 +1,31 @@
-import 'package:draw/draw.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
+import 'package:flutter/services.dart';
 
-import 'package:re_red/reddit_instance.dart';
-import 'package:re_red/content_view.dart';
-import 'package:re_red/constants.dart';
+import 'package:re_red/landing_page.dart';
+import 'package:re_red/login_flow.dart';
+import 'package:re_red/home_page.dart';
 
-void main() => runApp(ReReddit());
+void main() => runApp(ReRed());
 
-class ReReddit extends StatefulWidget {
-  @override
-  _ReRedditState createState() => _ReRedditState();
-}
-
-class _ReRedditState extends State<ReReddit> {
-  final RedditInstance getRedditInstance = RedditInstance();
+class ReRed extends StatelessWidget {
+  const ReRed({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setSystemUIOverlayStyle(SystemUiOverlayStyle(
+      statusBarColor: Colors.transparent,
+    ));
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: 're:Red',
       theme: ThemeData.dark(),
-      home: Scaffold(
-        body: CustomScrollView(
-          slivers: [
-            SliverAppBar(
-              title: kAppBarTitle,
-              centerTitle: true,
-              floating: true,
-              snap: true,
-              elevation: 0,
-              backgroundColor: kPrimaryShade,
-            ),
-            FutureProvider<Reddit>(
-              create: (context) =>
-                  getRedditInstance.createUntrustedRedditInstance(),
-              child: Consumer<Reddit>(
-                builder: (context, reddit, child) {
-                  return getRedditInstance.untrustedInstance == null
-                      ? SliverFillRemaining(
-                          child: Center(child: CircularProgressIndicator()),
-                        )
-                      : ContentView(
-                          reddit: getRedditInstance.untrustedInstance);
-                },
-              ),
-            ),
-          ],
-        ),
-      ),
+      initialRoute: 'landing',
+      routes: <String, WidgetBuilder>{
+        'landing': (context) => LandingPage(),
+        'login': (context) => LoginPage(),
+        'home': (context) => HomePage(),
+      },
     );
   }
 }

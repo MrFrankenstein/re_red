@@ -1,14 +1,14 @@
+import 'package:draw/draw.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:draw/draw.dart';
-import 'package:intl/intl.dart';
 import 'package:html_unescape/html_unescape_small.dart';
+import 'package:intl/intl.dart';
 
-import 'package:re_red/constants.dart';
+import 'package:re_red/commons.dart';
 import 'package:re_red/styles_getter.dart';
 
 class PostCard extends StatelessWidget {
-  PostCard({this.post});
+  PostCard({required this.post});
 
   final Submission post;
 
@@ -16,20 +16,25 @@ class PostCard extends StatelessWidget {
   Widget build(BuildContext context) {
     bool hasPreview = post.preview.isNotEmpty;
     if (hasPreview) hasPreview = post.preview.last.resolutions.isNotEmpty;
+
+    Awardings? allAwardings;
+    bool hasAwards = false;
+    if (post.data!['total_awards_received'] > 0 &&
+        post.data!['all_awardings'] != null) {
+      allAwardings = Awardings(
+          awardingsData: post.data!['all_awardings'],
+          totalAwards: post.data!['total_awards_received']);
+      hasAwards = true;
+    }
+
     return IntrinsicHeight(
       child: Stack(
         alignment: Alignment.center,
         fit: StackFit.passthrough,
-        overflow: Overflow.clip,
         children: [
           ConstrainedBox(
-            constraints: BoxConstraints(maxHeight: 250),
-            child: hasPreview
-                ? Image.network(
-                    post.preview.last.resolutions.last.url.toString(),
-                    fit: BoxFit.fitWidth,
-                  )
-                : SizedBox(),
+            constraints: BoxConstraints(maxHeight: 300),
+            child: hasPreview ? PreviewGetter(post).getPreview() : SizedBox(),
           ),
           Container(
             padding: EdgeInsets.all(15),
@@ -62,31 +67,31 @@ class PostCard extends StatelessWidget {
                         width: 33,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
-                          color: subredditStyles[post.subreddit.displayName]
-                              .primaryColor,
+                          color: subredditStyles[post.subreddit.displayName]!
+                              .primaryColor, //TODO: sometimes gets called on null
                         ),
                         child: ClipOval(
-                          child: subredditStyles[post.subreddit.displayName]
+                          child: subredditStyles[post.subreddit.displayName]!
                                       .subredditIconUrl ==
                                   ""
                               ? Icon(
                                   Icons.ac_unit_outlined,
                                   size: 22,
                                   color: subredditStyles[
-                                                  post.subreddit.displayName]
-                                              .primaryColor
+                                                  post.subreddit.displayName]!
+                                              .primaryColor!
                                               .computeLuminance() >
                                           0.5
                                       ? Color(0xff252527)
                                       : Color(0xfff8f8f8),
                                 )
                               : Image.network(
-                                  subredditStyles[post.subreddit.displayName]
-                                      .subredditIconUrl),
+                                  subredditStyles[post.subreddit.displayName]!
+                                      .subredditIconUrl
+                                      .toString()),
                         ),
                       ),
                     ),
-                    // SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -137,11 +142,13 @@ class PostCard extends StatelessWidget {
                         ),
                       ],
                     ),
+                    Spacer(),
                   ],
                 ),
                 hasPreview
                     ? Expanded(child: SizedBox(height: 10))
                     : SizedBox(height: 10),
+                Row(children: TagsGetter(post).tags),
                 Container(
                   padding: EdgeInsets.symmetric(
                     horizontal: 12,
@@ -193,15 +200,11 @@ class PostCard extends StatelessWidget {
                       padding: EdgeInsets.only(
                         top: 4,
                         bottom: 4,
-                        right: 12,
-                        left: 8,
+                        right: 8,
+                        left: 10,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.black26,
-                        borderRadius: BorderRadius.only(
-                          topRight: Radius.circular(20),
-                          bottomRight: Radius.circular(20),
-                        ),
                       ),
                       child: Row(
                         children: [
@@ -218,15 +221,12 @@ class PostCard extends StatelessWidget {
                         ],
                       ),
                     ),
-                    Spacer(),
-                    // Image.asset(
-                    //   'assets/awards/platinum.png',  //TODO
-                    //   scale: 1.5,
-                    // ),
-                    // Spacer(),
+                    SizedBox(width: 1),
+                    hasAwards ? allAwardings!.getAwardsPreview() : Container(),
+                    Expanded(child: SizedBox(width: 10)),
                     Container(
                       height: 4,
-                      width: post.upvoteRatio * 100,
+                      width: post.upvoteRatio * 80,
                       decoration: BoxDecoration(
                         color: kRedShade,
                         border: Border(
@@ -238,7 +238,7 @@ class PostCard extends StatelessWidget {
                     ),
                     Container(
                       height: 4,
-                      width: 100 - (post.upvoteRatio * 100),
+                      width: 80 - (post.upvoteRatio * 80),
                       decoration: BoxDecoration(
                         color: kBlueShade,
                         border: Border(
@@ -248,7 +248,6 @@ class PostCard extends StatelessWidget {
                         ),
                       ),
                     ),
-                    SizedBox(width: 20),
                   ],
                 ),
               ],
@@ -256,6 +255,216 @@ class PostCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class TagsGetter {
+  final Submission post;
+  List<Widget> tags = [];
+
+  TagsGetter(this.post) {
+    getTags();
+  }
+
+  void getTags() {
+    if (post.over18 || post.spoiler) {
+      tags.add(SizedBox(width: 4));
+    }
+
+    if (post.over18) {
+      tags.add(Container(
+        margin: EdgeInsets.all(4),
+        padding: EdgeInsets.all(4),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Color(0xCCFF6161),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black54,
+              offset: Offset(2, 2),
+              blurRadius: 5,
+            ),
+          ],
+        ),
+        child: Text(
+          '18',
+          style: TextStyle(
+            color: Colors.black87,
+            fontSize: 11,
+            fontFamily: 'Lora',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ));
+    }
+
+    if (post.spoiler) {
+      tags.add(Container(
+        margin: EdgeInsets.all(4),
+        padding: EdgeInsets.all(8),
+        decoration: BoxDecoration(
+          shape: BoxShape.circle,
+          color: Colors.white70,
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black54,
+              offset: Offset(2, 2),
+              blurRadius: 5,
+            ),
+          ],
+        ),
+        child: Text(
+          '!',
+          style: TextStyle(
+            color: Colors.black87,
+            fontSize: 11,
+            fontFamily: 'NewYork',
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+      ));
+    }
+  }
+}
+
+class PreviewGetter {
+  PreviewGetter(this.post);
+  final Submission post;
+
+  Widget getPreview() {
+    print('#############################');
+    print(post.fullname);
+    if (post.variants.isEmpty) {
+      return Image.network(
+        post.preview.last.resolutions.last.url.toString(),
+        fit: BoxFit.fitWidth,
+      );
+    } else if (post.over18 || post.spoiler) {
+      return Image.network(
+        post.variants[0]['obfuscated']!.resolutions.last.url.toString(),
+        fit: BoxFit.fitWidth,
+      );
+    } else {
+      return Image.network(
+        post.variants[0]['gif']!.resolutions.last.url.toString(),
+        fit: BoxFit.fitWidth,
+        gaplessPlayback: true,
+        frameBuilder: (context, child, frame, wasSynchronouslyLoaded) {
+          return child; //TODO: use mp4 variants for streaming rather than gifs
+        },
+      );
+    }
+  }
+}
+
+class Awardings {
+  final List awardingsData;
+  final int totalAwards;
+
+  Map awardingsMap = {};
+
+  bool isSilver = false;
+  bool isGold = false;
+  bool isPlatinum = false;
+  bool isArgentium = false;
+  bool isTernion = false;
+
+  List awardsPreviewList = [];
+
+  Awardings({required this.awardingsData, required this.totalAwards}) {
+    for (var award in awardingsData) {
+      awardingsMap[award['name']] = {
+        'name': award['name'],
+        'count': award['count'],
+        'description': award['description'],
+        'iconUrl': HtmlUnescape().convert(award['icon_url']),
+        'smallIconUrl':
+            HtmlUnescape().convert(award['resized_icons'][1]['url']),
+      };
+    }
+
+    if (awardingsMap.containsKey('Silver')) isSilver = true;
+    if (awardingsMap.containsKey('Gold')) isGold = true;
+    if (awardingsMap.containsKey('Platinum')) isPlatinum = true;
+    if (awardingsMap.containsKey('Argentium')) isArgentium = true;
+    if (awardingsMap.containsKey('Ternion All-Powerful')) isTernion = true;
+
+    if (awardingsData.length > 0 && awardingsData.length < 4) {
+      for (var award in awardingsMap.values) {
+        awardsPreviewList.add(award);
+      }
+    } else {
+      while (awardsPreviewList.length < 3) {
+        if (isTernion) {
+          awardsPreviewList.add(awardingsMap['Ternion All-Powerful']);
+          isTernion = false;
+        } else if (isArgentium) {
+          awardsPreviewList.add(awardingsMap['Argentium']);
+          isArgentium = false;
+        } else if (isPlatinum) {
+          awardsPreviewList.add(awardingsMap['Platinum']);
+          isPlatinum = false;
+        } else if (isGold) {
+          awardsPreviewList.add(awardingsMap['Gold']);
+          isGold = false;
+        } else if (isSilver) {
+          awardsPreviewList.add(awardingsMap['Silver']);
+          isSilver = false;
+        } else {
+          for (var award in awardingsMap.values) {
+            if (awardsPreviewList.length >= 3) break;
+            if (!awardsPreviewList.contains(award))
+              awardsPreviewList.add(award);
+          }
+          break;
+        }
+      }
+    }
+  }
+
+  Container getAwardsPreview() {
+    return Container(
+      padding: const EdgeInsets.only(
+        left: 8,
+        right: 10,
+        top: 2,
+        bottom: 2,
+      ),
+      decoration: BoxDecoration(
+        color: Colors.black26,
+        borderRadius: BorderRadius.only(
+          topRight: Radius.circular(20),
+          bottomRight: Radius.circular(20),
+        ),
+      ),
+      child: Row(
+        children: awardsPreviewList
+            .map((award) => Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: getAwardIcon(award),
+                ))
+            .toList()
+          ..add(totalAwards - awardsPreviewList.length == 0
+              ? Padding(padding: EdgeInsets.zero)
+              : Padding(
+                  padding: const EdgeInsets.all(2),
+                  child: Text(
+                    '+' +
+                        NumberFormat.compact()
+                            .format(totalAwards - awardsPreviewList.length)
+                            .toString(),
+                    style: kPostScore,
+                  ),
+                )),
+      ),
+    );
+  }
+
+  Image getAwardIcon(Map award) {
+    return Image.network(
+      award['smallIconUrl'],
+      width: 15,
     );
   }
 }

@@ -1,6 +1,6 @@
 # re_red
 
-Re: Reddit
+A new Flutter project.
 
 ## Getting Started
 
