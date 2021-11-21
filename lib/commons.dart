@@ -36,9 +36,7 @@ final RichText titleLogo = RichText(
           fontFamily: 'SanFrancisco Mono',
           fontSize: 32,
           fontWeight: FontWeight.bold,
-          shadows: [
-            Shadow(color: Colors.black, offset: Offset(1, 2), blurRadius: 3)
-          ],
+          shadows: [Shadow(color: Colors.black, offset: Offset(1, 2), blurRadius: 3)],
         ),
       ),
       TextSpan(
@@ -47,9 +45,7 @@ final RichText titleLogo = RichText(
           fontFamily: 'OldLondon',
           fontSize: 60,
           letterSpacing: 1,
-          shadows: [
-            Shadow(color: Colors.black, offset: Offset(1, 2), blurRadius: 3)
-          ],
+          shadows: [Shadow(color: Colors.black, offset: Offset(1, 2), blurRadius: 3)],
         ),
       ),
     ],
@@ -66,9 +62,7 @@ final RichText smallTitleLogo = RichText(
           fontFamily: 'SanFrancisco Mono',
           fontSize: 18,
           fontWeight: FontWeight.bold,
-          shadows: [
-            Shadow(color: Colors.black, offset: Offset(1, 2), blurRadius: 3)
-          ],
+          shadows: [Shadow(color: Colors.black, offset: Offset(1, 2), blurRadius: 3)],
         ),
       ),
       TextSpan(
@@ -77,9 +71,7 @@ final RichText smallTitleLogo = RichText(
           fontFamily: 'OldLondon',
           fontSize: 34,
           letterSpacing: 1,
-          shadows: [
-            Shadow(color: Colors.black, offset: Offset(1, 2), blurRadius: 3)
-          ],
+          shadows: [Shadow(color: Colors.black, offset: Offset(1, 2), blurRadius: 3)],
         ),
       ),
     ],
@@ -88,7 +80,7 @@ final RichText smallTitleLogo = RichText(
 
 // Login and Browse buttons
 final ButtonStyle loginButtonStyle = ElevatedButton.styleFrom(
-  primary: Colors.red,
+  primary: neonRed,
   padding: EdgeInsets.symmetric(horizontal: 30, vertical: 10),
   shape: RoundedRectangleBorder(),
 );
@@ -103,12 +95,8 @@ const Color primaryShade = Color(0xFF223459);
 const Color redShade = Color(0xE68C0335);
 const Color blueShade = Color(0xE65888A6);
 const Color greyShade = Color(0xFFE8E8E8);
-
-// Transferred shit TODO
-const Color kPrimaryShade = Color(0xFF223459);
-const Color kRedShade = Color(0xE68C0335);
-const Color kBlueShade = Color(0xE65888A6);
-const Color kGreyShade = Color(0xFFE8E8E8);
+const Color neonRed = Color(0xFFFF1818);
+const Color neonBlue = Color(0xFF04D9FF);
 
 final RichText kAppBarTitle = RichText(
   text: TextSpan(
@@ -164,7 +152,7 @@ const TextStyle kPostSubreddit = TextStyle(
   ],
 );
 const TextStyle kPostAuthor = TextStyle(
-  color: kGreyShade,
+  color: greyShade,
   fontFamily: 'OpenSans',
   letterSpacing: 0.3,
   fontSize: 11,
@@ -177,7 +165,7 @@ const TextStyle kPostAuthor = TextStyle(
   ],
 );
 const TextStyle kPostScore = TextStyle(
-  color: kGreyShade,
+  color: greyShade,
   fontFamily: 'OpenSans',
   letterSpacing: 0.3,
   fontSize: 13,

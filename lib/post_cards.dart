@@ -19,11 +19,9 @@ class PostCard extends StatelessWidget {
 
     Awardings? allAwardings;
     bool hasAwards = false;
-    if (post.data!['total_awards_received'] > 0 &&
-        post.data!['all_awardings'] != null) {
-      allAwardings = Awardings(
-          awardingsData: post.data!['all_awardings'],
-          totalAwards: post.data!['total_awards_received']);
+    if (post.data!['total_awards_received'] > 0 && post.data!['all_awardings'] != null) {
+      allAwardings =
+          Awardings(awardingsData: post.data!['all_awardings'], totalAwards: post.data!['total_awards_received']);
       hasAwards = true;
     }
 
@@ -54,7 +52,7 @@ class PostCard extends StatelessWidget {
                 Row(
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(7),
+                      padding: const EdgeInsets.all(6),
                       decoration: BoxDecoration(
                         color: Colors.black26,
                         borderRadius: BorderRadius.only(
@@ -68,27 +66,19 @@ class PostCard extends StatelessWidget {
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           color: subredditStyles[post.subreddit.displayName]!
-                              .primaryColor, //TODO: sometimes gets called on null
+                              .primaryColor, //TODO: sometimes gets called on null because stylesGetter is async
                         ),
                         child: ClipOval(
-                          child: subredditStyles[post.subreddit.displayName]!
-                                      .subredditIconUrl ==
-                                  ""
+                          child: subredditStyles[post.subreddit.displayName]!.subredditIconUrl == ""
                               ? Icon(
                                   Icons.ac_unit_outlined,
                                   size: 22,
-                                  color: subredditStyles[
-                                                  post.subreddit.displayName]!
-                                              .primaryColor!
-                                              .computeLuminance() >
+                                  color: subredditStyles[post.subreddit.displayName]!.primaryColor!.computeLuminance() >
                                           0.5
                                       ? Color(0xff252527)
                                       : Color(0xfff8f8f8),
                                 )
-                              : Image.network(
-                                  subredditStyles[post.subreddit.displayName]!
-                                      .subredditIconUrl
-                                      .toString()),
+                              : Image.network(subredditStyles[post.subreddit.displayName]!.subredditIconUrl.toString()),
                         ),
                       ),
                     ),
@@ -97,14 +87,13 @@ class PostCard extends StatelessWidget {
                       children: [
                         Container(
                           padding: const EdgeInsets.only(
-                            left: 5,
                             right: 10,
-                            top: 5,
+                            top: 6,
                             bottom: 4,
                           ),
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.only(
-                              topRight: Radius.circular(18),
+                              topRight: Radius.circular(15),
                             ),
                             color: Colors.black26,
                           ),
@@ -115,7 +104,6 @@ class PostCard extends StatelessWidget {
                         ),
                         Container(
                           padding: const EdgeInsets.only(
-                            left: 5,
                             right: 8,
                             top: 3,
                             bottom: 5,
@@ -132,8 +120,7 @@ class PostCard extends StatelessWidget {
                                 TextSpan(text: post.author, style: kPostAuthor),
                                 kDotSeparator,
                                 TextSpan(
-                                  text: PostingTime()
-                                      .getDuration(post.createdUtc),
+                                  text: PostingTime().getDuration(post.createdUtc),
                                   style: kPostAuthor,
                                 ),
                               ],
@@ -145,9 +132,7 @@ class PostCard extends StatelessWidget {
                     Spacer(),
                   ],
                 ),
-                hasPreview
-                    ? Expanded(child: SizedBox(height: 10))
-                    : SizedBox(height: 10),
+                hasPreview ? Expanded(child: SizedBox(height: 10)) : SizedBox(height: 10),
                 Row(children: TagsGetter(post).tags),
                 Container(
                   padding: EdgeInsets.symmetric(
@@ -170,7 +155,7 @@ class PostCard extends StatelessWidget {
                       padding: EdgeInsets.only(
                         top: 4,
                         bottom: 4,
-                        left: 12,
+                        left: 10,
                         right: 8,
                       ),
                       decoration: BoxDecoration(
@@ -184,7 +169,7 @@ class PostCard extends StatelessWidget {
                         children: [
                           Icon(
                             CupertinoIcons.arrow_up_arrow_down,
-                            color: kGreyShade,
+                            color: greyShade,
                             size: 13,
                           ),
                           SizedBox(width: 3),
@@ -200,17 +185,21 @@ class PostCard extends StatelessWidget {
                       padding: EdgeInsets.only(
                         top: 4,
                         bottom: 4,
-                        right: 8,
-                        left: 10,
+                        right: hasAwards ? 8 : 10,
+                        left: 8,
                       ),
                       decoration: BoxDecoration(
                         color: Colors.black26,
+                        borderRadius: BorderRadius.only(
+                          topRight: Radius.circular(hasAwards ? 0 : 20),
+                          bottomRight: Radius.circular(hasAwards ? 0 : 20),
+                        ),
                       ),
                       child: Row(
                         children: [
                           Icon(
                             CupertinoIcons.bubble_left,
-                            color: kGreyShade,
+                            color: greyShade,
                             size: 13,
                           ),
                           SizedBox(width: 4),
@@ -228,7 +217,7 @@ class PostCard extends StatelessWidget {
                       height: 4,
                       width: post.upvoteRatio * 80,
                       decoration: BoxDecoration(
-                        color: kRedShade,
+                        color: neonRed,
                         border: Border(
                           top: kBorderStyle,
                           bottom: kBorderStyle,
@@ -240,7 +229,7 @@ class PostCard extends StatelessWidget {
                       height: 4,
                       width: 80 - (post.upvoteRatio * 80),
                       decoration: BoxDecoration(
-                        color: kBlueShade,
+                        color: neonBlue,
                         border: Border(
                           top: kBorderStyle,
                           bottom: kBorderStyle,
@@ -273,57 +262,61 @@ class TagsGetter {
     }
 
     if (post.over18) {
-      tags.add(Container(
-        margin: EdgeInsets.all(4),
-        padding: EdgeInsets.all(4),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Color(0xCCFF6161),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black54,
-              offset: Offset(2, 2),
-              blurRadius: 5,
+      tags.add(
+        Container(
+          margin: EdgeInsets.only(left: 3, bottom: 8),
+          padding: EdgeInsets.only(left: 6, right: 6, top: 2, bottom: 3),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Color(0xCCFF6161),
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black54,
+                offset: Offset(2, 2),
+                blurRadius: 5,
+              ),
+            ],
+          ),
+          child: Text(
+            'nsfw',
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 11,
+              fontFamily: 'SanFrancisco Pro',
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        ),
-        child: Text(
-          '18',
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 11,
-            fontFamily: 'Lora',
-            fontWeight: FontWeight.bold,
           ),
         ),
-      ));
+      );
     }
 
     if (post.spoiler) {
-      tags.add(Container(
-        margin: EdgeInsets.all(4),
-        padding: EdgeInsets.all(8),
-        decoration: BoxDecoration(
-          shape: BoxShape.circle,
-          color: Colors.white70,
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black54,
-              offset: Offset(2, 2),
-              blurRadius: 5,
+      tags.add(
+        Container(
+          margin: EdgeInsets.only(left: 3, bottom: 8),
+          padding: EdgeInsets.only(left: 6, right: 6, top: 2, bottom: 3),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(20),
+            color: Colors.white70,
+            boxShadow: [
+              BoxShadow(
+                color: Colors.black54,
+                offset: Offset(2, 2),
+                blurRadius: 5,
+              ),
+            ],
+          ),
+          child: Text(
+            'spoiler',
+            style: TextStyle(
+              color: Colors.black87,
+              fontSize: 11,
+              fontFamily: 'SanFrancisco Pro',
+              fontWeight: FontWeight.bold,
             ),
-          ],
-        ),
-        child: Text(
-          '!',
-          style: TextStyle(
-            color: Colors.black87,
-            fontSize: 11,
-            fontFamily: 'NewYork',
-            fontWeight: FontWeight.bold,
           ),
         ),
-      ));
+      );
     }
   }
 }
@@ -333,8 +326,6 @@ class PreviewGetter {
   final Submission post;
 
   Widget getPreview() {
-    print('#############################');
-    print(post.fullname);
     if (post.variants.isEmpty) {
       return Image.network(
         post.preview.last.resolutions.last.url.toString(),
@@ -379,8 +370,7 @@ class Awardings {
         'count': award['count'],
         'description': award['description'],
         'iconUrl': HtmlUnescape().convert(award['icon_url']),
-        'smallIconUrl':
-            HtmlUnescape().convert(award['resized_icons'][1]['url']),
+        'smallIconUrl': HtmlUnescape().convert(award['resized_icons'][1]['url']),
       };
     }
 
@@ -414,8 +404,7 @@ class Awardings {
         } else {
           for (var award in awardingsMap.values) {
             if (awardsPreviewList.length >= 3) break;
-            if (!awardsPreviewList.contains(award))
-              awardsPreviewList.add(award);
+            if (!awardsPreviewList.contains(award)) awardsPreviewList.add(award);
           }
           break;
         }
@@ -426,8 +415,8 @@ class Awardings {
   Container getAwardsPreview() {
     return Container(
       padding: const EdgeInsets.only(
-        left: 8,
-        right: 10,
+        left: 6,
+        right: 8,
         top: 2,
         bottom: 2,
       ),
@@ -450,10 +439,7 @@ class Awardings {
               : Padding(
                   padding: const EdgeInsets.all(2),
                   child: Text(
-                    '+' +
-                        NumberFormat.compact()
-                            .format(totalAwards - awardsPreviewList.length)
-                            .toString(),
+                    '+' + NumberFormat.compact().format(totalAwards - awardsPreviewList.length).toString(),
                     style: kPostScore,
                   ),
                 )),
@@ -464,7 +450,7 @@ class Awardings {
   Image getAwardIcon(Map award) {
     return Image.network(
       award['smallIconUrl'],
-      width: 15,
+      width: 13,
     );
   }
 }

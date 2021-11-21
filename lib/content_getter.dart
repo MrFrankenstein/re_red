@@ -42,24 +42,27 @@ class ContentGetter with ChangeNotifier {
   ConnectionState connectionState = ConnectionState.done;
   int get contentCount => contentList.length;
 
-  void getMoreContent() async {
+  Future<void> addMoreContent() async {
     connectionState = ConnectionState.active;
-    var generatedContent = await reddit.front
-        .hot(limit: 20, after: lastID)
-        .map((event) => event as Submission)
-        .toList();
+    var generatedContent =
+        await reddit.front.hot(limit: 10, after: lastID).map((event) => event as Submission).toList();
+    await stylesGetter.getStyles(generatedContent);
     contentList.addAll(generatedContent);
     connectionState = ConnectionState.done;
     lastID = contentList.last.fullname;
-    await stylesGetter.getStyles(generatedContent);
+    print('----------------------------------------');
+    print('GETTING MORE CONTENT');
+    print('----------------------------------------');
     notifyListeners();
   }
 
   Widget contentWidget(int index) {
+    if ((connectionState == ConnectionState.done && index == contentCount - 5) || contentCount == 0) {
+      addMoreContent();
+    }
     if (connectionState == ConnectionState.done && index < contentCount) {
       return PostCard(post: contentList[index]);
     } else {
-      getMoreContent();
       return Center(child: LinearProgressIndicator());
     }
   }
