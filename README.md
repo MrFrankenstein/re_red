@@ -3,7 +3,7 @@
 [![GitHub stars](https://img.shields.io/github/stars/MrFrankenstein/re_red?style=for-the-badge)](https://github.com/MrFrankenstein/re_red/stargazers)
 
 
-Android/iOS Reddit client application with a revamped modern user interfact, and an intuitive user experience.
+Android/iOS Reddit client application with a revamped modern user interface, and an intuitive user experience.
 Play Store publish pending
 
 ## Screenshots
