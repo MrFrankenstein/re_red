@@ -8,7 +8,7 @@ Play Store publish pending
 
 ## Screenshots
 
-<img src="/Screenshots/login.png" width="275"> <img src="/Screenshots/UI1.png" width="275"> <img src="/Screenshots/UI2.png" width="275">
+<img src="/Screenshots/login.png" width="270"> <img src="/Screenshots/UI1.png" width="270"> <img src="/Screenshots/UI2.png" width="270">
 
 ## Building from source
 
