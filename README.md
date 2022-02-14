@@ -1,5 +1,5 @@
 # re:Red
-[![License badge](https://img.shields.io/github/license/MrFrankenstein/re_red)](https://github.com/MrFrankenstein/re_red/blob/master/LICENSE)
+[![License badge](https://img.shields.io/github/license/MrFrankenstein/re_red)](https://github.com/MrFrankenstein/re_red/blob/main/LICENSE)
 [![GitHub stars](https://img.shields.io/github/stars/MrFrankenstein/re_red?style=social)](https://github.com/MrFrankenstein/re_red/stargazers)
 
 
