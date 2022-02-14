@@ -23,4 +23,4 @@ I'm open to anyone contributing to this repo. I'd advise using Android Studio an
 
 ## Credits
 
-Login splash screen: [Sylvia Ritter](https://www.sylvia-ritter.com/)
+Illustration on login splash screen by: [Sylvia Ritter](https://www.sylvia-ritter.com/)
