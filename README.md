@@ -19,3 +19,8 @@ Play Store publish pending
 ## Contribution
 
 I'm open to anyone contributing to this repo. I'd advise using Android Studio and running a `dartfmt` before creating a pull request: `dartfmt`.
+
+
+## Credits
+
+Login splash screen: [Sylvia Ritter](https://www.sylvia-ritter.com/)
