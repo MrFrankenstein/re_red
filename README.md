@@ -1,6 +1,6 @@
 # re:Red
-[![License badge](https://img.shields.io/github/license/MrFrankenstein/re_red)](https://github.com/MrFrankenstein/re_red/blob/main/LICENSE)
-[![GitHub stars](https://img.shields.io/github/stars/MrFrankenstein/re_red?style=social)](https://github.com/MrFrankenstein/re_red/stargazers)
+[![License badge](https://img.shields.io/github/license/MrFrankenstein/re_red?style=for-the-badge)](./LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/MrFrankenstein/re_red?style=for-the-badge)](https://github.com/MrFrankenstein/re_red/stargazers)
 
 
 Android/iOS Reddit client application with a revamped modern user interfact, and an intuitive user experience.
