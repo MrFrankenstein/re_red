@@ -1,16 +1,21 @@
-# re_red
+# re:Red
+[![License badge](https://img.shields.io/github/license/MrFrankenstein/re_red)](https://github.com/MrFrankenstein/re_red/blob/master/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/MrFrankenstein/re_red?style=social)](https://github.com/MrFrankenstein/re_red/stargazers)
 
-A new Flutter project.
 
-## Getting Started
+Android/iOS Reddit client application with a revamped modern user interfact, and an intuitive user experience.
+Play Store publish pending
 
-This project is a starting point for a Flutter application.
+## Screenshots
 
-A few resources to get you started if this is your first Flutter project:
+<img src="/Screenshots/login.png" width="275"> <img src="/Screenshots/UI1.png" width="275"> <img src="/Screenshots/UI2.png" width="275">
 
-- [Lab: Write your first Flutter app](https://flutter.dev/docs/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://flutter.dev/docs/cookbook)
+## Building from source
 
-For help getting started with Flutter, view our
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+- Clone the repo, `cd re_red-main`
+
+- Run using `flutter run` or open with an IDE such as Android Studio
+
+## Contribution
+
+I'm open to anyone contributing to this repo. I'd advise using Android Studio and running a `dartfmt` before creating a pull request: `dartfmt`.
