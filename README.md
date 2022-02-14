@@ -4,7 +4,7 @@
 
 
 Android/iOS Reddit client application with a revamped modern user interface, and an intuitive user experience.
-Play Store publish pending
+Google Play and Apple App Store publish pending
 
 ## Screenshots
 
